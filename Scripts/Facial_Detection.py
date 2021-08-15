@@ -9,6 +9,9 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 
 # Use the 'haarcascade_eye.xml' haarcascade to detect faces in each Frame 
 eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
+
+image_status = False
+detected = False
 while(True):
     # Get each frame from the camera 
     ret,frame = cap.read()
@@ -19,7 +22,6 @@ while(True):
     # Detect any Faces(upto 5 faces) in the Frame with a probability of '1.3'
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     for (x, y, w, h) in faces:
-        print(x,y,w,h)
         # Draw a rectangle over the 'Face/Faces'
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 3)
 
@@ -30,11 +32,19 @@ while(True):
         # Detects the eyes in the Frames
         eyes = eye_cascade.detectMultiScale(roi_gray, 1.3, 5)
         for (ex, ey, ew, eh) in eyes:
+            detected = True
             # Draw a rectangle over the eyes
             cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
     
     # Display the Frames
     cv2.imshow('Frame',frame)
+
+    #To save the Image if Face and Eyes are detected
+    if(image_status == False and detected == True):
+        # Choose a Path to save the image
+        image_status = True
+        cv2.imwrite('Image.jpg',frame)
+    
 
     # If user enters 'q' then exit the loop and close the window 
     if(cv2.waitKey(1) == ord('q')):
