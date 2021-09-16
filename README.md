@@ -5,5 +5,5 @@ Saves the Frame as 'Image.jpg' if the eyes and face are detected.
 # Requirements 
 Following Libraries must be installed:
 OpenCV
-tkinter
-os
+\n tkinter
+\n os
